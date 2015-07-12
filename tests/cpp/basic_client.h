@@ -15,7 +15,7 @@
 #include "node_prog/reach_program.h"
 
 bool
-execute_request(uint64_t n1, uint64_t n2, client &c)
+execute_request(uint64_t n1, uint64_t n2, cl::client &c)
 {
     bool ret;
     node_prog::reach_params rp;
@@ -34,7 +34,7 @@ execute_request(uint64_t n1, uint64_t n2, client &c)
 void
 basic_client_test()
 {
-    client c(CLIENT_ID);
+    cl::client c(CLIENT_ID);
     auto edge_props = std::make_shared<std::vector<common::property>>();
     size_t nodes[10];
     size_t edges[10];

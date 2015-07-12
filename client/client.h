@@ -38,6 +38,7 @@
 #include "node_prog/traverse_with_props.h"
 #include "node_prog/discover_paths.h"
 #include "node_prog/get_btc_block.h"
+#include "node_prog/deep_nodes_inference.h"
 
 namespace cl
 {
@@ -96,6 +97,9 @@ namespace cl
             weaver_client_returncode read_n_edges_program(std::vector<std::pair<std::string, node_prog::read_n_edges_params>> &initial_args, node_prog::read_n_edges_params&);
             weaver_client_returncode edge_count_program(std::vector<std::pair<std::string, node_prog::edge_count_params>> &initial_args, node_prog::edge_count_params&);
             weaver_client_returncode edge_get_program(std::vector<std::pair<std::string, node_prog::edge_get_params>> &initial_args, node_prog::edge_get_params&);
+            
+            weaver_client_returncode deepNodesInference(std::vector<std::pair<std::string, node_prog::deep_node_infer_params>> &initial_args, node_prog::deep_node_infer_params&);
+
             weaver_client_returncode node_get_program(std::vector<std::pair<std::string, node_prog::node_get_params>> &initial_args, node_prog::node_get_params&);
             weaver_client_returncode traverse_props_program(std::vector<std::pair<std::string, node_prog::traverse_props_params>> &initial_args, node_prog::traverse_props_params&);
             weaver_client_returncode discover_paths_program(std::vector<std::pair<std::string, node_prog::discover_paths_params>> &initial_args, node_prog::discover_paths_params&);

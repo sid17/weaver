@@ -404,10 +404,11 @@ client :: run_node_program(node_prog::prog_type prog_to_run,
     }
 
 #else
-
     bool retry;
     do {
         msg.prepare_message(message::CLIENT_NODE_PROG_REQ, prog_to_run, initial_args);
+        
+
         send_code = send_coord(msg.buf);
 
         if (send_code == BUSYBEE_DISRUPTED) {
@@ -502,6 +503,14 @@ client :: edge_get_program(std::vector<std::pair<std::string, node_prog::edge_ge
 {
     SPECIFIC_NODE_PROG(node_prog::EDGE_GET);
 }
+
+
+weaver_client_returncode
+client :: deepNodesInference(std::vector<std::pair<std::string, node_prog::deep_node_infer_params>> &initial_args, node_prog::deep_node_infer_params &return_param)
+{
+    SPECIFIC_NODE_PROG(node_prog::DEEP_NODE_INFER);
+}
+
 
 weaver_client_returncode
 client :: node_get_program(std::vector<std::pair<std::string, node_prog::node_get_params>> &initial_args, node_prog::node_get_params &return_param)

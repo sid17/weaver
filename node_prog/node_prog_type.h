@@ -41,6 +41,7 @@ namespace node_prog
         READ_N_EDGES,
         EDGE_COUNT,
         EDGE_GET,
+        DEEP_NODE_INFER,
         NODE_GET,
         TRAVERSE_PROPS,
         DISCOVER_PATHS,

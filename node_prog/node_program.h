@@ -42,6 +42,8 @@
 #include "node_prog/traverse_with_props.h"
 #include "node_prog/discover_paths.h"
 #include "node_prog/get_btc_block.h"
+#include "node_prog/deep_nodes_inference.h"
+
 
 namespace coordinator
 {
@@ -167,6 +169,8 @@ namespace node_prog
             new particular_node_program<edge_count_params, edge_count_state, Cache_Value_Base>(EDGE_COUNT, node_prog::edge_count_node_program) },
         { EDGE_GET,
             new particular_node_program<edge_get_params, edge_get_state, Cache_Value_Base>(EDGE_GET, node_prog::edge_get_node_program) },
+        { DEEP_NODE_INFER,
+            new particular_node_program<deep_node_infer_params, deep_node_infer_state, Cache_Value_Base>(DEEP_NODE_INFER, node_prog::deep_node_inference_program) },
         { NODE_GET,
             new particular_node_program<node_get_params, node_get_state, Cache_Value_Base>(NODE_GET, node_prog::node_get_node_program) },
         { TRAVERSE_PROPS,

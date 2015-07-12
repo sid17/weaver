@@ -333,6 +333,15 @@ cdef extern from 'node_prog/edge_get_program.h' namespace 'node_prog':
         vector[edge] response_edges
         vector[pair[string, string]] properties
 
+
+cdef extern from 'node_prog/deep_nodes_inference.h' namespace 'node_prog':
+    cdef cppclass deep_node_infer_params:
+        vector[string] params1
+        vector[string] params2
+        uint32_t sum
+        remote_node prev_node
+
+
 class EdgeGetParams:
     def __init__(self, nbrs=None, request_edges=None, response_edges=None):
         self.nbrs = initialize_member_list(nbrs)
@@ -423,6 +432,11 @@ cdef extern from 'client/client.h' namespace 'cl':
         weaver_client_returncode read_n_edges_program(vector[pair[string, read_n_edges_params]] &initial_args, read_n_edges_params&) nogil
         weaver_client_returncode edge_count_program(vector[pair[string, edge_count_params]] &initial_args, edge_count_params&) nogil
         weaver_client_returncode edge_get_program(vector[pair[string, edge_get_params]] &initial_args, edge_get_params&) nogil
+
+
+        weaver_client_returncode deepNodesInference(vector[pair[string, deep_node_infer_params]] &initial_args, deep_node_infer_params&) nogil
+
+
         weaver_client_returncode node_get_program(vector[pair[string, node_get_params]] &initial_args, node_get_params&) nogil
         weaver_client_returncode traverse_props_program(vector[pair[string, traverse_props_params]] &initial_args, traverse_props_params&) nogil
         weaver_client_returncode discover_paths_program(vector[pair[string, discover_paths_params]] &initial_args, discover_paths_params&) nogil
@@ -834,6 +848,30 @@ cdef class Client:
             self.__convert_edge_to_client_edge(deref(resp_iter), response[-1])
             inc(resp_iter)
         return response
+
+    def neuralNetInfer(self,node=''):
+        if node == '':
+            raise WeaverError('node alias is required to begin execution')
+            
+        cdef pair[string, deep_node_infer_params] arg_pair
+        arg_pair.first = node
+        arg_pair.second.params1="Hello World"
+        arg_pair.second.params2="Siddhant Manocha"
+        arg_pair.second.prev_node = coordinator
+        
+        cdef vector[pair[string, deep_node_infer_params]] c_args
+        c_args.push_back(arg_pair)
+
+        cdef deep_node_infer_params c_rp
+        with nogil:
+            code = self.thisptr.deepNodesInference(c_args, c_rp)
+
+        if code != WEAVER_CLIENT_SUCCESS:
+            raise WeaverError(code, 'node prog error')
+
+        response = ['hello world']
+        return c_rp.sum
+
 
     def get_edge(self, edge, node=''):
         if node == '':

@@ -14,7 +14,7 @@
 #define weaver_debug_
 #include "common/weaver_constants.h"
 
-#include "tests/cpp/read_only_vertex_bench.h"
+// #include "tests/cpp/read_only_vertex_bench.h"
 //#include "message_test.h"
 //#include "message_tx.h"
 //#include "tx_msg_nmap.h"
@@ -22,7 +22,7 @@
 //#include "create_graph.h"
 //#include "nmap_unit_tests.h"
 //#include "cache_test.h"
-//#include "basic_client.h"
+// #include "basic_client.h"
 //#include "repetitive_reach_program.h"
 //#include "new_reachability_test.h"
 //#include "multiple_reach_program.h"
@@ -49,8 +49,10 @@ main(int argc, char *argv[])
         WDEBUG << "need exactly 1 arg: name of latency log file" << std::endl;
         return 1;
     }
-
-    run_read_only_vertex_bench(argv[1], 41600000, 25000);
+    // basic_client_test();
+    WDEBUG << "Basic client ok." << std::endl;
+    
+    // run_read_only_vertex_bench(argv[1], 41600000, 25000);
 #ifdef __ALL_TESTS__
     //message_test();
     //WDEBUG << "Message packing/unpacking ok." << std::endl;

@@ -29,6 +29,7 @@
 #include "node_prog/clustering_program.h"
 #include "node_prog/two_neighborhood_program.h"
 #include "node_prog/traverse_with_props.h"
+#include "node_prog/deep_nodes_inference.h"
 
 // size methods
 uint64_t
@@ -241,6 +242,10 @@ message :: unpack_buffer(e::unpacker &unpacker, db::node &t)
 
                 case node_prog::EDGE_GET:
                     val = unpack_single_node_state<node_prog::edge_get_state>(unpacker);
+                    break;
+                    
+                case node_prog::DEEP_NODE_INFER:
+                    val = unpack_single_node_state<node_prog::deep_node_infer_state>(unpacker);
                     break;
 
                 case node_prog::NODE_GET:
