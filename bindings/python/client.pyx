@@ -336,10 +336,10 @@ cdef extern from 'node_prog/edge_get_program.h' namespace 'node_prog':
 
 cdef extern from 'node_prog/deep_nodes_inference.h' namespace 'node_prog':
     cdef cppclass deep_node_infer_params:
-        vector[string] params1
-        vector[string] params2
-        uint32_t sum
-        remote_node prev_node
+        pair[string, string] network_description
+        vector[double] network_input
+        uint32_t rank
+        string activationFn
 
 
 class EdgeGetParams:
@@ -849,16 +849,23 @@ cdef class Client:
             inc(resp_iter)
         return response
 
-    def neuralNetInfer(self,node=''):
-        if node == '':
+    def neuralNetInfer(self,input=[],start_node="start_node",end_node="end_node",activationFn="sigmoid"):
+        if start_node == '':
             raise WeaverError('node alias is required to begin execution')
             
+        cdef vector[double] inputVec=input
+       
         cdef pair[string, deep_node_infer_params] arg_pair
-        arg_pair.first = node
-        arg_pair.second.params1="Hello World"
-        arg_pair.second.params2="Siddhant Manocha"
-        arg_pair.second.prev_node = coordinator
+        arg_pair.first = start_node
+        arg_pair.second.network_description.first=start_node
+        arg_pair.second.network_description.second=end_node
+        arg_pair.second.network_input=inputVec
+        arg_pair.second.activationFn=activationFn
+
         
+
+       
+
         cdef vector[pair[string, deep_node_infer_params]] c_args
         c_args.push_back(arg_pair)
 
@@ -869,8 +876,7 @@ cdef class Client:
         if code != WEAVER_CLIENT_SUCCESS:
             raise WeaverError(code, 'node prog error')
 
-        response = ['hello world']
-        return c_rp.sum
+        return c_rp.network_input
 
 
     def get_edge(self, edge, node=''):

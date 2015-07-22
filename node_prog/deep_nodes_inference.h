@@ -16,14 +16,24 @@ namespace node_prog
     {
         public:
             // request params
-            // take intersection of all specified predicates
-            std::vector<std::string> params1;
-            std::vector<std::string> params2;
-            
+            std::pair <std::string,std::string> network_description;
+            // network description stores the handle names for the starting
+            // and the ending nodes for the network
+            std::vector<double> network_input;
+            // contains the input to the network, it is a vector for the start node
+            //  and single value for all other nodes of the network
 
-            // response params
-            uint32_t sum;
-            db::remote_node prev_node;
+            // std::vector<double> network_output;
+            // contains the output to the network, it is a vector for the last node 
+            //  and single value for all other nodes of the network
+
+            int rank;
+            // rank will be useful for the last node of the network
+
+            std::string layerType;
+            std::string layerOp;
+            
+            std::string activationFn;
 
             // would never need to cache
             bool search_cache() { return false; }
@@ -36,9 +46,12 @@ namespace node_prog
        struct deep_node_infer_state: public virtual Node_State_Base
     {
         bool visited;
-        uint32_t out_count; // number of requests propagated
-        db::remote_node prev_node; // previous node
-        uint32_t recorded_sum;
+        uint32_t in_count; // number of requests propagated
+        std::vector<double> recorded_output;
+
+        // stacks the values for the last nodes 
+        // single value for all other nodes of the network
+
 
         deep_node_infer_state();
         ~deep_node_infer_state() { }
