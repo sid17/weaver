@@ -89,6 +89,22 @@ getEdgePropVal(node_prog::edge &e, std::string propertyName)
 }
 
 
+double
+getNodePropVal(node_prog::node &n, std::string propertyName)
+{
+		node_prog::prop_list plist = n.get_properties();
+		for (std::vector<std::shared_ptr<node_prog::property>> pvec: plist) 
+		{
+			if (pvec.front()->key==propertyName)
+			{
+				double i_dec = std::stod (pvec.front()->value);
+				return i_dec;
+			}
+		}
+}
+
+
+
 std::string
 getEdgePropValStr(node_prog::edge &e, std::string propertyName)
 {
@@ -208,7 +224,11 @@ node_prog :: deep_node_inference_program(
 					state.visited=true;
 					state.in_count=nodeIncount(n);
 					if (params.layerType!="pool") 
-						state.recorded_output.assign (1,0.0); 
+					{
+						double bias=getNodePropVal(n,"bias");
+						state.recorded_output.assign (1,bias); 
+					}
+						
 				}
 
 				if (params.layerType=="pool") 
